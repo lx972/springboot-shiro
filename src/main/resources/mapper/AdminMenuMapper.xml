@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kgc.test.mapper.AdminMenuMapper">
+    <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminMenu">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="name_zh" property="name_zh" jdbcType="VARCHAR"/>
+        <result column="icon_cls" property="icon_cls" jdbcType="VARCHAR"/>
+        <result column="component" property="component" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parent_id" jdbcType="INTEGER"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="cn.kgc.test.model.AdminMenu">
+    insert into admin_menu (id, `path`, `name`, 
+      name_zh, icon_cls, component, 
+      parent_id)
+    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{name_zh,jdbcType=VARCHAR}, #{icon_cls,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR}, 
+      #{parent_id,jdbcType=INTEGER})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminMenu">
+    update admin_menu
+    set `path` = #{path,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      name_zh = #{name_zh,jdbcType=VARCHAR},
+      icon_cls = #{icon_cls,jdbcType=VARCHAR},
+      component = #{component,jdbcType=VARCHAR},
+      parent_id = #{parent_id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, `path`, `name`, name_zh, icon_cls, component, parent_id
+    from admin_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, `path`, `name`, name_zh, icon_cls, component, parent_id
+    from admin_menu
+  </select>
+    <!--根据用户角色查询其所拥有的菜单-->
+    <select id="selectMenusByRids" resultMap="BaseResultMap">
+        select id, `path`, `name`, name_zh, icon_cls, component, parent_id
+        from admin_menu
+        WHERE id IN(
+        SELECT `mid` FROM admin_role_menu WHERE rid IN
+        <foreach collection="rids" open="(" separator="," close=")" index="index" item="item">#{item}
+        </foreach>)
+    </select>
+
+    <!--根据父菜单id查询其所拥有的子菜单-->
+    <select id="selectMenusByParentId" resultMap="BaseResultMap">
+        select id, `path`, `name`, name_zh, icon_cls, component, parent_id
+        from admin_menu
+        WHERE parent_id =#{parentId}
+    </select>
+</mapper>

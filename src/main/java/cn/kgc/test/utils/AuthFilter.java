@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 /**
- * cn.kgc.test.utils
+ * 重写的认证方式
  *
  * @Author Administrator
  * @date 12:00

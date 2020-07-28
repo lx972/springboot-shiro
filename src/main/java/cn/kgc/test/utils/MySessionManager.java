@@ -53,8 +53,8 @@ public class MySessionManager extends DefaultWebSessionManager {
             return sessionid;
         } else {
             //不存在，禁止使用cookie中的sessionid
-            return super.getSessionId(request, response);
             //return null;
+            return super.getSessionId(request, response);
         }
     }
 }

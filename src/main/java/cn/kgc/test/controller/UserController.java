@@ -26,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     /**
-     * allowCredentials="true"允许携带验证信息，即token
+     * 登录
      *
      * @param user
      * @return
@@ -61,17 +61,8 @@ public class UserController {
      */
     @RequestMapping(path = "/authentication", method = RequestMethod.GET)
     public ResultAPI authentication() {
-        System.out.println("1111");
+        //已登录才能访问到此方法
         return new ResultAPI(200, "认证成功");
     }
 
-    /**
-     * 未登录返回
-     *
-     * @return
-     */
-    @RequestMapping(path = "/unauthorized")
-    public ResultAPI unauthorized() {
-        return new ResultAPI(301, "没有登录，请先登录");
-    }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kgc.test.mapper.AdminRoleMapper" >
+  <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminRole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="name_zh" property="name_zh" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.kgc.test.model.AdminRole" >
+    insert into admin_role (id, `name`, name_zh, 
+      enabled)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{name_zh,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminRole" >
+    update admin_role
+    set `name` = #{name,jdbcType=VARCHAR},
+      name_zh = #{name_zh,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `name`, name_zh, enabled
+    from admin_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `name`, name_zh, enabled
+    from admin_role
+  </select>
+
+  <!--根据用户id查询该用户所拥有的的角色id-->
+  <select id="selectRoleIdByUserId" resultType="java.lang.Integer">
+    SELECT rid FROM admin_user_role WHERE uid=#{uid}
+  </select>
+</mapper>
