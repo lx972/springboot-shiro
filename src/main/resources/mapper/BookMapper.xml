@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kgc.test.mapper.BookMapper">
+    <resultMap id="BaseResultMap" type="cn.kgc.test.model.Book">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cover" jdbcType="VARCHAR" property="cover"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+        <result column="press" jdbcType="VARCHAR" property="press"/>
+        <result column="abs" jdbcType="VARCHAR" property="abs"/>
+        <result column="cid" jdbcType="INTEGER" property="cid"/>
+        <association property="category" javaType="cn.kgc.test.model.Category" column="cid"
+                     select="cn.kgc.test.mapper.CategoryMapper.selectByPrimaryKey"></association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="cn.kgc.test.model.Book">
+    insert into book (id, cover, title, 
+      author, `date`, press, 
+      `abs`, cid)
+    values (#{id,jdbcType=INTEGER}, #{cover,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, #{press,jdbcType=VARCHAR}, 
+      #{abs,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.Book">
+    update book
+    set cover = #{cover,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      `date` = #{date,jdbcType=TIMESTAMP},
+      press = #{press,jdbcType=VARCHAR},
+      `abs` = #{abs,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, cover, title, author, `date`, press, `abs`, cid
+    from book
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, cover, title, author, `date`, press, `abs`, cid
+    from book
+  </select>
+
+    <select id="selectListByBook" resultMap="BaseResultMap">
+        select id, cover, title, author, `date`, press, `abs`, cid
+        from book
+        <where>
+            <if test="book.id!=null">id=#{book.id}</if>
+            <if test="book.cover!=null">and cover=#{book.cover}</if>
+            <if test="book.title!=null">and title=#{book.title}</if>
+            <if test="book.author!=null">and author=#{book.author}</if>
+            <if test="book.date!=null">and `date`=#{book.date}</if>
+            <if test="book.press!=null">and press=#{book.press}</if>
+            <if test="book.abs!=null">and `abs`=#{book.cover}</if>
+            <if test="book.cid!=null">and cid=#{book.cid}</if>
+        </where>
+    </select>
+
+    <!--<select id="selectListByCategoryIdAndKeywords" resultMap="BaseResultMap">
+        select t1.id, t1.cover, t1.title, t1.author, t1.`date`, t1.press, t1.`abs`, t1.cid,t2.id,t2.name
+        from book t1,category t2
+        where t1.cid=t2.id
+        <if test="categoryId!=0">and t1.cid=#{categoryId}</if>
+        <if test="keywords!=''">and t1.title like concat('%',#{keywords},'%') or t1.author like
+            concat('%',#{keywords},'%')
+        </if>
+    </select>-->
+    <select id="selectListByCategoryIdAndKeywords" resultMap="BaseResultMap">
+        select id, cover, title, author, `date`, press, `abs`,cid
+        from book
+        <where>
+            <if test="categoryId!=0">and cid=#{categoryId}</if>
+            <if test="keywords!=''">and title like concat('%',#{keywords},'%') or author like
+                concat('%',#{keywords},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+</mapper>
