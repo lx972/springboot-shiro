@@ -1,6 +1,7 @@
 package cn.kgc.test.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private Integer id;
@@ -18,6 +19,8 @@ public class User implements Serializable {
     private String email;
 
     private Boolean enabled;
+
+    private List<Integer> rids;
 
     private static final long serialVersionUID = 1L;
 
@@ -85,6 +88,14 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
+    public List<Integer> getRids() {
+        return rids;
+    }
+
+    public void setRids(List<Integer> rids) {
+        this.rids = rids;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -99,6 +110,7 @@ public class User implements Serializable {
         sb.append(", phone=").append(phone);
         sb.append(", email=").append(email);
         sb.append(", enabled=").append(enabled);
+        sb.append(", rids=").append(rids);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

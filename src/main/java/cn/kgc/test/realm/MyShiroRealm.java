@@ -9,6 +9,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -56,7 +57,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             return null;
         } else {
             //进行认证
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(username, loginUser.getPassword(), getName());
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(username, loginUser.getPassword(),  ByteSource.Util.bytes(loginUser.getSalt()), getName());
             return simpleAuthenticationInfo;
         }
     }

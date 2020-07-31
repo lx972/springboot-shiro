@@ -1,13 +1,17 @@
 package cn.kgc.test.service.impl;
 
+import cn.kgc.test.mapper.AdminUserRoleMapper;
 import cn.kgc.test.mapper.UserMapper;
+import cn.kgc.test.model.AdminUserRole;
 import cn.kgc.test.model.User;
 import cn.kgc.test.service.UserService;
 import cn.kgc.test.utils.ResultAPI;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,10 +25,13 @@ import java.util.UUID;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
-
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AdminUserRoleMapper adminUserRoleMapper;
 
     /**
      * 注册
@@ -45,8 +52,8 @@ public class UserServiceImpl implements UserService {
         //随机生成字符串作为盐
         user.setSalt(UUID.randomUUID().toString());
         //使用md5对密码进行加密
-        String MD5 = DigestUtils.md5DigestAsHex((user.getPassword() + user.getSalt()).getBytes());
-        user.setPassword(MD5);
+        Object md5 = new SimpleHash("MD5", user.getPassword(), user.getSalt(), 1);
+        user.setPassword(md5.toString());
         //将该账号设置为可用
         user.setEnabled(true);
         userMapper.insert(user);
@@ -63,5 +70,49 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUserInfo() {
         return userMapper.selectAll();
+    }
+
+
+    /**
+     * 更新用户信息
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public ResultAPI updateUserInfo(User user) {
+        //更新用户信息
+        userMapper.updateByPrimaryKey(user);
+        //更新用户所拥有的角色
+        //删除原来所拥有的角色
+        adminUserRoleMapper.deleteByUid(user.getId());
+        //添加角色
+        AdminUserRole adminUserRole = new AdminUserRole();
+        adminUserRole.setUid(user.getId());
+        for (Integer rid : user.getRids()) {
+            adminUserRole.setRid(rid);
+            adminUserRole.setId(null);
+            adminUserRoleMapper.insert(adminUserRole);
+        }
+        return new ResultAPI(200, "更新用户信息成功");
+    }
+
+
+    /**
+     * 重设密码
+     *
+     * @param uid
+     * @return
+     */
+    @Override
+    public ResultAPI resetPassword(Integer uid) {
+        User user = new User();
+        user.setId(uid);
+        user.setSalt(UUID.randomUUID().toString());
+        Object md5 = new SimpleHash("MD5", "123", user.getSalt(), 1);
+        logger.info(md5.toString());
+        user.setPassword(md5.toString());
+        userMapper.updateByPrimaryKey(user);
+        return new ResultAPI(200, "重设密码成功");
     }
 }

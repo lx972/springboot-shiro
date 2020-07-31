@@ -29,4 +29,10 @@
     select id, `uid`, rid
     from admin_user_role
   </select>
+
+<!--根据用户id删除用户所拥有的角色-->
+  <delete id="deleteByUid" parameterType="java.lang.Integer" >
+    delete from admin_user_role
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -25,4 +25,13 @@ public interface AdminRoleMapper {
      * @return
      */
     List<Integer> selectRoleIdByUserId(@Param("uid") Integer uid);
+
+
+    /**
+     * 根据用户id查询该用户所拥有的的角色详情
+     *
+     * @param uid
+     * @return
+     */
+    List<AdminRole> selectRolesByUserId(@Param("uid") Integer uid);
 }

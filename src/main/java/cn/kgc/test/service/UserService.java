@@ -30,4 +30,23 @@ public interface UserService {
      */
     List<User> findAllUserInfo();
 
+
+    /**
+     * 更新用户信息
+     *
+     * @param user
+     * @return
+     */
+    ResultAPI updateUserInfo(User user);
+
+
+    /**
+     * 重设密码
+     *
+     * @param uid
+     * @return
+     */
+    ResultAPI resetPassword(Integer uid);
+
+
 }

@@ -109,7 +109,39 @@ public class UserController {
     public ResultAPI users() {
         try {
             List<User> users = userService.findAllUserInfo();
-            return new ResultAPI(200, "用户信息加载成功",users);
+            return new ResultAPI(200, "用户信息加载成功", users);
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+
+    /**
+     * 更新用户信息
+     *
+     * @return
+     */
+    @RequestMapping(path = "updation/user/role", method = RequestMethod.PUT)
+    public ResultAPI updateUser(@RequestBody User user) {
+        logger.info(user.toString());
+        try {
+            return userService.updateUserInfo(user);
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+
+    /**
+     * 重设密码
+     *
+     * @return
+     */
+    @RequestMapping(path = "updation/user/resetPassword", method = RequestMethod.PATCH)
+    public ResultAPI resetPassword(@RequestBody User user) {
+        logger.info(user.toString());
+        try {
+            return userService.resetPassword(user.getId());
         } catch (Exception e) {
             return new ResultAPI(500, "服务器异常");
         }

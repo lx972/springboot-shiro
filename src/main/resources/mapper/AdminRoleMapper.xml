@@ -12,9 +12,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.kgc.test.model.AdminRole" >
-    insert into admin_role (id, `name`, name_zh, 
+    insert into admin_role (id, `name`, name_zh,
       enabled)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{name_zh,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{name_zh,jdbcType=VARCHAR},
       #{enabled,jdbcType=BIT})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminRole" >
@@ -37,5 +37,15 @@
   <!--根据用户id查询该用户所拥有的的角色id-->
   <select id="selectRoleIdByUserId" resultType="java.lang.Integer">
     SELECT rid FROM admin_user_role WHERE uid=#{uid}
+  </select>
+
+  <!--根据用户id查询该用户所拥有的的角色详情-->
+  <select id="selectRolesByUserId" resultMap="BaseResultMap" >
+    SELECT id, `name`, name_zh, enabled
+     FROM admin_role WHERE id IN(
+    SELECT rid FROM admin_user_role
+     <where>
+       <if test="uid!=null">uid=#{uid}</if>
+     </where> )
   </select>
 </mapper>
