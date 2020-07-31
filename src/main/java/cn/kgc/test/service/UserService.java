@@ -2,6 +2,9 @@ package cn.kgc.test.service;
 
 
 import cn.kgc.test.model.User;
+import cn.kgc.test.utils.ResultAPI;
+
+import java.util.List;
 
 /**
  * cn.kgc.test.service
@@ -12,12 +15,19 @@ import cn.kgc.test.model.User;
 public interface UserService {
 
     /**
-     * 根据用户名和密码查询用户
+     * 注册
      *
-     * @param username
-     * @param password
+     * @param user
      * @return
      */
-    User getUserByUsernameAndPassword(String username, String password);
+    ResultAPI register(User user);
+
+
+    /**
+     * 加载所有用户信息
+     *
+     * @return
+     */
+    List<User> findAllUserInfo();
 
 }

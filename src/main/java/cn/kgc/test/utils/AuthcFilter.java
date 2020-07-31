@@ -21,7 +21,7 @@ import java.util.Map;
  * @Author Administrator
  * @date 12:00
  */
-public class AuthFilter extends FormAuthenticationFilter {
+public class AuthcFilter extends FormAuthenticationFilter {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -45,7 +45,7 @@ public class AuthFilter extends FormAuthenticationFilter {
                 //去登陆
                 return this.executeLogin(request, response);
             } else {
-
+                //放行
                 return true;
             }
         } else {
@@ -58,8 +58,8 @@ public class AuthFilter extends FormAuthenticationFilter {
             httpResponse.setCharacterEncoding("UTF-8");
             PrintWriter out = httpResponse.getWriter();
             Map<String, Object> map = new HashMap<>();
-            map.put("code", 301);
-            //map.put("msg","没有登录，请先登录");
+            map.put("code", 302);
+            map.put("msg","没有登录，请先登录");
             String s = objectMapper.writeValueAsString(map);
             out.println(s);
             out.flush();

@@ -86,13 +86,14 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
         //设置自定义认真方式
-        filters.put("authc",new AuthFilter());
+        filters.put("authc",new AuthcFilter());
+        filters.put("logout",new MyLogoutFilter());
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> map = new HashMap<>();
         //配置不需要身份认证的链接
         map.put("/api/login", "anon");
         //登出
-        map.put("/logout", "logout");
+        map.put("/api/logout", "logout");
         //其他链接均需认证
         map.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);

@@ -23,13 +23,18 @@ public class AdminMenuController {
     @Autowired
     private AdminMenuService adminMenuService;
 
-    @RequestMapping(path = "/menus",method = RequestMethod.GET)
-    public ResultAPI menus(){
+    /**
+     * 加载后台菜单
+     *
+     * @return
+     */
+    @RequestMapping(path = "/menus", method = RequestMethod.GET)
+    public ResultAPI menus() {
         List<AdminMenu> menusByCurrentUser = adminMenuService.getMenusByCurrentUser();
-        if (menusByCurrentUser!=null){
-            return new ResultAPI(200,"加载菜单成功",menusByCurrentUser);
-        }else {
-            return new ResultAPI(500,"加载菜单失败");
+        if (menusByCurrentUser != null) {
+            return new ResultAPI(200, "加载菜单成功", menusByCurrentUser);
+        } else {
+            return new ResultAPI(404, "该用户无菜单");
         }
     }
 }
