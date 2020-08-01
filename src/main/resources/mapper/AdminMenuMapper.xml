@@ -15,11 +15,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="cn.kgc.test.model.AdminMenu">
-    insert into admin_menu (id, `path`, `name`, 
-      name_zh, icon_cls, component, 
+    insert into admin_menu (id, `path`, `name`,
+      name_zh, icon_cls, component,
       parent_id)
-    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{name_zh,jdbcType=VARCHAR}, #{icon_cls,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{name_zh,jdbcType=VARCHAR}, #{icon_cls,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR},
       #{parent_id,jdbcType=INTEGER})
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminMenu">
@@ -56,5 +56,10 @@
         select id, `path`, `name`, name_zh, icon_cls, component, parent_id
         from admin_menu
         WHERE parent_id =#{parentId}
+    </select>
+
+    <!--根据角色id查询拥有的菜单id-->
+    <select id="selectMenuIdsByRid" resultType="java.lang.Integer">
+        select mid from admin_role_menu where rid=#{rid}
     </select>
 </mapper>

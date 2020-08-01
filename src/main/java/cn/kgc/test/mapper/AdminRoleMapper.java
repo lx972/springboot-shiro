@@ -34,4 +34,12 @@ public interface AdminRoleMapper {
      * @return
      */
     List<AdminRole> selectRolesByUserId(@Param("uid") Integer uid);
+
+
+    /**
+     * 查询所有可用角色
+     *
+     * @return
+     */
+    List<AdminRole> selectAllEnabledRole();
 }

@@ -33,4 +33,14 @@ public interface AdminMenuMapper {
      * @return
      */
     List<AdminMenu> selectMenusByParentId(@Param("parentId") Integer parentId);
+
+
+
+    /**
+     * 根据角色id查询拥有的菜单id
+     *
+     * @param rid
+     * @return
+     */
+    List<Integer> selectMenuIdsByRid(@Param("rid") Integer rid);
 }

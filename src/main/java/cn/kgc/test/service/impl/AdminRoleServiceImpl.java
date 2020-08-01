@@ -40,15 +40,39 @@ public class AdminRoleServiceImpl implements AdminRoleService {
 
 
     /**
-     * 加载所有角色
+     * 加载所有可用角色
      *
-     * @param uid
      * @return
      */
     @Override
-    public ResultAPI findAllRoleByUid(Integer uid) {
+    public ResultAPI findAllEnabledRole() {
+        //查询所有可用角色详情
+        List<AdminRole> adminRoles = adminRoleMapper.selectAllEnabledRole();
+        return new ResultAPI(200, "所有可用角色详情加载成功", adminRoles);
+    }
+
+ /**
+     * 加载所有角色
+     *
+     * @return
+     */
+    @Override
+    public ResultAPI findAllRole() {
         //查询所有角色详情
-        List<AdminRole> adminRoles = adminRoleMapper.selectRolesByUserId(null);
+        List<AdminRole> adminRoles = adminRoleMapper.selectAll();
         return new ResultAPI(200, "所有角色详情加载成功", adminRoles);
+    }
+
+
+    /**
+     * 更新角色状态
+     *
+     * @param role
+     * @return
+     */
+    @Override
+    public ResultAPI enabledRole(AdminRole role) {
+        adminRoleMapper.updateByPrimaryKey(role);
+        return new ResultAPI(200, "更新角色状态成功");
     }
 }

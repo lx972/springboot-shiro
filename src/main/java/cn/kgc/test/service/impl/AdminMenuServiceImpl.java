@@ -6,11 +6,13 @@ import cn.kgc.test.mapper.UserMapper;
 import cn.kgc.test.model.AdminMenu;
 import cn.kgc.test.model.User;
 import cn.kgc.test.service.AdminMenuService;
+import cn.kgc.test.utils.ResultAPI;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,6 +55,48 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         List<Integer> rids = adminRoleMapper.selectRoleIdByUserId(loginUser.getId());
         //根据用户角色查询其所拥有的菜单
         List<AdminMenu> adminMenus = adminMenuMapper.selectMenusByRids(rids);
+        //整理菜单信息，形成树结构
+        return createTree(adminMenus);
+    }
+
+
+    /**
+     * 根据角色id查询所拥有的菜单
+     *
+     * @return
+     */
+    @Override
+    public List<AdminMenu> findAllMenusByRid(Integer rid) {
+        List<Integer> rids = new ArrayList<>();
+        rids.add(rid);
+        //根据角色查询其所拥有的菜单
+        List<AdminMenu> adminMenus = adminMenuMapper.selectMenusByRids(rids);
+        //整理菜单信息，形成树结构
+        return createTree(adminMenus);
+    }
+
+    /**
+     * 根据角色id查询拥有的菜单id
+     *
+     * @return
+     */
+    @Override
+    public ResultAPI findMenuIdsByRid(Integer rid) {
+        //根据角色查询其所拥有的菜单id
+        List<Integer> menuIds = adminMenuMapper.selectMenuIdsByRid(rid);
+
+        return new ResultAPI(200, "查询角色id拥有的菜单id成功", menuIds);
+    }
+
+
+    /**
+     * 查询所有菜单
+     *
+     * @return
+     */
+    @Override
+    public List<AdminMenu> findAllMenus() {
+        List<AdminMenu> adminMenus = adminMenuMapper.selectAll();
         //整理菜单信息，形成树结构
         return createTree(adminMenus);
     }

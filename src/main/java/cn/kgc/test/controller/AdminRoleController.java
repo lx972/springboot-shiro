@@ -1,12 +1,12 @@
 package cn.kgc.test.controller;
 
+import cn.kgc.test.model.AdminRole;
 import cn.kgc.test.service.AdminRoleService;
 import cn.kgc.test.utils.ResultAPI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * cn.kgc.test.controller
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api")
 public class AdminRoleController {
+    private Logger logger = LoggerFactory.getLogger(AdminRoleController.class);
 
     @Autowired
     private AdminRoleService adminRoleService;
@@ -45,7 +46,38 @@ public class AdminRoleController {
     @RequestMapping(path = "/roles", method = RequestMethod.GET)
     public ResultAPI loadRoles() {
         try {
-            ResultAPI result = adminRoleService.findAllRoleByUid(null);
+            ResultAPI result = adminRoleService.findAllRole();
+            return result;
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+    /**
+     * 加载所有可用角色
+     *
+     * @return
+     */
+    @RequestMapping(path = "enabled/roles", method = RequestMethod.GET)
+    public ResultAPI loadEnabledRoles() {
+        try {
+            ResultAPI result = adminRoleService.findAllEnabledRole();
+            return result;
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+    /**
+     * 更新角色状态
+     *
+     * @return
+     */
+    @RequestMapping(path = "updation/role/enabled", method = RequestMethod.PATCH)
+    public ResultAPI enabledRole(@RequestBody AdminRole role) {
+        logger.info(role.toString());
+        try {
+            ResultAPI result = adminRoleService.enabledRole(role);
             return result;
         } catch (Exception e) {
             return new ResultAPI(500, "服务器异常");

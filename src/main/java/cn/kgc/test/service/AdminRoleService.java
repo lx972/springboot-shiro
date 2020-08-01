@@ -1,5 +1,6 @@
 package cn.kgc.test.service;
 
+import cn.kgc.test.model.AdminRole;
 import cn.kgc.test.utils.ResultAPI;
 
 /**
@@ -20,10 +21,26 @@ public interface AdminRoleService {
 
 
     /**
-     * 加载所有角色
+     * 加载所有可用角色
      *
-     * @param uid
      * @return
      */
-    ResultAPI findAllRoleByUid(Integer uid);
+    ResultAPI findAllEnabledRole();
+
+
+ /**
+     * 加载所有角色
+     *
+     * @return
+     */
+    ResultAPI findAllRole();
+
+
+    /**
+     * 更新角色状态
+     *
+     * @param role
+     * @return
+     */
+    ResultAPI enabledRole(AdminRole role);
 }

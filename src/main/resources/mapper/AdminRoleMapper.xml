@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.kgc.test.mapper.AdminRoleMapper" >
-  <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminRole" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="name_zh" property="name_zh" jdbcType="VARCHAR" />
-    <result column="enabled" property="enabled" jdbcType="BIT" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="cn.kgc.test.mapper.AdminRoleMapper">
+    <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminRole">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="name_zh" property="name_zh" jdbcType="VARCHAR"/>
+        <result column="enabled" property="enabled" jdbcType="BIT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from admin_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.kgc.test.model.AdminRole" >
+    <insert id="insert" parameterType="cn.kgc.test.model.AdminRole">
     insert into admin_role (id, `name`, name_zh,
       enabled)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{name_zh,jdbcType=VARCHAR},
       #{enabled,jdbcType=BIT})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminRole" >
-    update admin_role
-    set `name` = #{name,jdbcType=VARCHAR},
-      name_zh = #{name_zh,jdbcType=VARCHAR},
-      enabled = #{enabled,jdbcType=BIT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminRole">
+        update admin_role
+        <set>
+            <if test="name!=null and name!=''">`name` = #{name,jdbcType=VARCHAR},</if>
+            <if test="name_zh!=null and name_zh!=''">name_zh = #{name_zh,jdbcType=VARCHAR},</if>
+            <if test="enabled!=null">enabled = #{enabled,jdbcType=BIT}</if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select id, `name`, name_zh, enabled
     from admin_role
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, `name`, name_zh, enabled
     from admin_role
   </select>
 
-  <!--根据用户id查询该用户所拥有的的角色id-->
-  <select id="selectRoleIdByUserId" resultType="java.lang.Integer">
-    SELECT rid FROM admin_user_role WHERE uid=#{uid}
+    <!--根据用户id查询该用户所拥有的的可用角色id-->
+    <select id="selectRoleIdByUserId" resultType="java.lang.Integer">
+    SELECT id FROM admin_role WHERE enabled=1 and id IN(
+        SELECT rid FROM admin_user_role
+        where uid=#{uid})
   </select>
 
-  <!--根据用户id查询该用户所拥有的的角色详情-->
-  <select id="selectRolesByUserId" resultMap="BaseResultMap" >
-    SELECT id, `name`, name_zh, enabled
-     FROM admin_role WHERE id IN(
-    SELECT rid FROM admin_user_role
-     <where>
-       <if test="uid!=null">uid=#{uid}</if>
-     </where> )
-  </select>
+    <!--根据用户id查询该用户所拥有的可用角色详情-->
+    <select id="selectRolesByUserId" resultMap="BaseResultMap">
+        SELECT id, `name`, name_zh, enabled
+        FROM admin_role WHERE enabled=1 and id IN(
+        SELECT rid FROM admin_user_role
+        where uid=#{uid})
+    </select>
+
+    <!--查询所有可用角色-->
+    <select id="selectAllEnabledRole" resultMap="BaseResultMap">
+        SELECT id, `name`, name_zh, enabled
+        FROM admin_role WHERE enabled=1
+    </select>
 </mapper>
