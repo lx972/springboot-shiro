@@ -32,7 +32,7 @@
             <if test="name!=null and name!=''">`name` = #{name,jdbcType=VARCHAR},</if>
             <if test="phone!=null and phone!=''">phone = #{phone,jdbcType=VARCHAR},</if>
             <if test="email!=null and email!=''">email = #{email,jdbcType=VARCHAR},</if>
-            <if test="enabled!=null and enabled!=''">enabled = #{enabled,jdbcType=BIT}</if>
+            <if test="enabled!=null">enabled = #{enabled}</if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -46,6 +46,18 @@
     from user
   </select>
 
+    <select id="selectLogin" resultMap="BaseResultMap">
+        select id, username, `password`, salt, `name`, phone, email, enabled
+        from user
+        <where>
+            <if test="id!=null">id=#{id}</if>
+            <if test="username!=null">and username=#{username}</if>
+            <if test="password!=null">and password=#{password}</if>
+            and enabled=1
+        </where>
+    </select>
+
+
     <select id="selectOneByUser" resultMap="BaseResultMap">
         select id, username, `password`, salt, `name`, phone, email, enabled
         from user
@@ -55,5 +67,14 @@
             <if test="password!=null">and password=#{password}</if>
         </where>
     </select>
+
+    <!--批量删除-->
+    <delete id="deleteBatchByIds" parameterType="java.lang.Integer">
+        delete from user
+        where id in
+        <foreach collection="uids" open="(" separator="," close=")" index="i" item="uid">
+            #{uid}
+        </foreach>
+    </delete>
 
 </mapper>

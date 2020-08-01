@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.kgc.test.mapper.AdminUserRoleMapper" >
-  <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminUserRole" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="uid" property="uid" jdbcType="INTEGER" />
-    <result column="rid" property="rid" jdbcType="INTEGER" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="cn.kgc.test.mapper.AdminUserRoleMapper">
+    <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminUserRole">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="rid" property="rid" jdbcType="INTEGER"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from admin_user_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.kgc.test.model.AdminUserRole" >
+    <insert id="insert" parameterType="cn.kgc.test.model.AdminUserRole">
     insert into admin_user_role (id, `uid`, rid)
     values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminUserRole" >
+    <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminUserRole">
     update admin_user_role
     set `uid` = #{uid,jdbcType=INTEGER},
       rid = #{rid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select id, `uid`, rid
     from admin_user_role
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, `uid`, rid
     from admin_user_role
   </select>
 
-<!--根据用户id删除用户所拥有的角色-->
-  <delete id="deleteByUid" parameterType="java.lang.Integer" >
+    <!--根据用户id删除用户所拥有的角色-->
+    <delete id="deleteByUid" parameterType="java.lang.Integer">
     delete from admin_user_role
     where uid = #{uid,jdbcType=INTEGER}
   </delete>
+
+    <!--根据多个用户id删除用户所拥有的角色-->
+    <delete id="deleteAllByUids" parameterType="java.lang.Integer">
+        delete from admin_user_role
+        where uid in
+        <foreach collection="uids" open="(" separator="," close=")" index="i" item="uid">
+            #{uid}
+        </foreach>
+    </delete>
 </mapper>

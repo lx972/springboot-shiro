@@ -49,4 +49,30 @@ public interface UserService {
     ResultAPI resetPassword(Integer uid);
 
 
+    /**
+     * 修改账户状态
+     *
+     * @param user
+     * @return
+     */
+    ResultAPI updataEnabled(User user);
+
+
+    /**
+     * 删除账户
+     *
+     * @param uid
+     * @return
+     */
+    ResultAPI deleteUser(Integer uid);
+
+    /**
+     * 批量删除用户
+     *
+     * @param uids
+     * @return
+     */
+    ResultAPI deleteBatch(List<Integer> uids);
+
+
 }

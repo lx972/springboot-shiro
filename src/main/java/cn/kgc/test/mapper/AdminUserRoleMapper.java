@@ -26,4 +26,12 @@ public interface AdminUserRoleMapper {
      * @return
      */
     int deleteByUid(@Param("uid") Integer uid);
+
+    /**
+     * 根据多个用户id删除用户所拥有的角色
+     *
+     * @param uids
+     * @return
+     */
+    int deleteAllByUids(@Param("uids") List<Integer> uids);
 }

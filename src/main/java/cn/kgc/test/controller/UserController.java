@@ -147,4 +147,52 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 修改账户状态
+     *
+     * @return
+     */
+    @RequestMapping(path = "updation/user/enabled", method = RequestMethod.PATCH)
+    public ResultAPI enabled(@RequestBody User user) {
+        logger.info(user.toString());
+        try {
+            return userService.updataEnabled(user);
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+
+    /**
+     * 删除账户
+     *
+     * @return
+     */
+    @RequestMapping(path = "/user/{uid}", method = RequestMethod.DELETE)
+    public ResultAPI deleteUser(@PathVariable("uid") Integer uid) {
+        logger.info("uid:" + uid.toString());
+        try {
+            return userService.deleteUser(uid);
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+    /**
+     * 批量删除用户
+     *
+     * @return
+     */
+    @RequestMapping(path = "user/Batch/{uids}", method = RequestMethod.DELETE)
+    public ResultAPI deleteBatch(@PathVariable("uids") List<Integer> uids) {
+        logger.info("uids:" + uids.toString());
+        try {
+            return userService.deleteBatch(uids);
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+
+    }
+
 }

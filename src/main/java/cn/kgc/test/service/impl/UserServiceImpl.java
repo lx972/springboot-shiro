@@ -115,4 +115,45 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByPrimaryKey(user);
         return new ResultAPI(200, "重设密码成功");
     }
+
+    /**
+     * 修改账户状态
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public ResultAPI updataEnabled(User user) {
+        userMapper.updateByPrimaryKey(user);
+        return new ResultAPI(200, "修改账户状态成功");
+    }
+
+
+    /**
+     * 删除账户
+     *
+     * @param uid
+     * @return
+     */
+    @Override
+    public ResultAPI deleteUser(Integer uid) {
+        userMapper.deleteByPrimaryKey(uid);
+        //删除用户所拥有的角色
+        adminUserRoleMapper.deleteByUid(uid);
+        return new ResultAPI(200, "删除账户成功");
+    }
+
+    /**
+     * 批量删除用户
+     *
+     * @param uids
+     * @return
+     */
+    @Override
+    public ResultAPI deleteBatch(List<Integer> uids) {
+        userMapper.deleteBatchByIds(uids);
+        //删除用户所拥有的角色
+        adminUserRoleMapper.deleteAllByUids(uids);
+        return new ResultAPI(200, "批量删除账户成功");
+    }
 }

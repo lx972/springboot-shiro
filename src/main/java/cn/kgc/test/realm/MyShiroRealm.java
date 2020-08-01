@@ -52,12 +52,12 @@ public class MyShiroRealm extends AuthorizingRealm {
         User user = new User();
         user.setUsername(username);
         //取数据库找到对应的用户数据
-        User loginUser = userMapper.selectOneByUser(user);
+        User loginUser = userMapper.selectLogin(user);
         if (null == loginUser) {
             return null;
         } else {
             //进行认证
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(username, loginUser.getPassword(),  ByteSource.Util.bytes(loginUser.getSalt()), getName());
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(username, loginUser.getPassword(), ByteSource.Util.bytes(loginUser.getSalt()), getName());
             return simpleAuthenticationInfo;
         }
     }
