@@ -1,6 +1,7 @@
 package cn.kgc.test.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class AdminRole implements Serializable {
     private Integer id;
@@ -10,6 +11,10 @@ public class AdminRole implements Serializable {
     private String name_zh;
 
     private Boolean enabled;
+
+    private List<Integer> mids;
+
+    private List<Integer> pids;
 
     private static final long serialVersionUID = 1L;
 
@@ -45,6 +50,22 @@ public class AdminRole implements Serializable {
         this.enabled = enabled;
     }
 
+    public List<Integer> getMids() {
+        return mids;
+    }
+
+    public void setMids(List<Integer> mids) {
+        this.mids = mids;
+    }
+
+    public List<Integer> getPids() {
+        return pids;
+    }
+
+    public void setPids(List<Integer> pids) {
+        this.pids = pids;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -55,6 +76,8 @@ public class AdminRole implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", name_zh=").append(name_zh);
         sb.append(", enabled=").append(enabled);
+        sb.append(", mids=").append(mids);
+        sb.append(", pids=").append(pids);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

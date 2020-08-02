@@ -83,4 +83,22 @@ public class AdminRoleController {
             return new ResultAPI(500, "服务器异常");
         }
     }
+
+
+    /**
+     * 更新角色信息及其菜单和功能
+     *
+     * @return
+     */
+    @RequestMapping(path = "/roles", method = RequestMethod.PUT)
+    public ResultAPI updateRole(@RequestBody AdminRole role) {
+        logger.info("更新角色信息及其菜单和功能");
+        logger.info(role.toString());
+        try {
+            ResultAPI result = adminRoleService.updateRoleMenuAndPermission(role);
+            return result;
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
 }

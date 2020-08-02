@@ -43,4 +43,13 @@ public interface AdminRoleService {
      * @return
      */
     ResultAPI enabledRole(AdminRole role);
+
+
+    /**
+     * 更新角色信息及其菜单和功能
+     *
+     * @param role
+     * @return
+     */
+    ResultAPI updateRoleMenuAndPermission(AdminRole role);
 }

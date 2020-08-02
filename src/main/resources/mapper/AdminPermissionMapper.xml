@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kgc.test.mapper.AdminPermissionMapper">
+    <resultMap id="BaseResultMap" type="cn.kgc.test.model.AdminPermission">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="desc_" property="desc_" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="cn.kgc.test.model.AdminPermission">
+    insert into admin_permission (id, `name`, desc_,
+      url)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc_,jdbcType=VARCHAR},
+      #{url,jdbcType=VARCHAR})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.kgc.test.model.AdminPermission">
+    update admin_permission
+    set `name` = #{name,jdbcType=VARCHAR},
+      desc_ = #{desc_,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, `name`, desc_, url
+    from admin_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, `name`, desc_, url
+    from admin_permission
+  </select>
+    <!--根据角色id查询出该角色拥有的功能id-->
+    <select id="selectPidsByRid" resultType="java.lang.Integer">
+    select pid
+    from admin_role_permission where rid=#{rid}
+  </select>
+</mapper>
