@@ -87,4 +87,6 @@ public class AuthcFilter extends FormAuthenticationFilter {
         //已登录用户请求允许访问，否则去onAccessDenied方法
         return super.isAccessAllowed(request, response, mappedValue);
     }
+
+
 }

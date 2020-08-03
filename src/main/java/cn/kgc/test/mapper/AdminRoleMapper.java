@@ -42,4 +42,19 @@ public interface AdminRoleMapper {
      * @return
      */
     List<AdminRole> selectAllEnabledRole();
+
+    /**
+     * 批量删除角色
+     *
+     * @return
+     */
+    int deleteBatch(@Param("rids")List<Integer> rids);
+
+
+    /**
+     * 根据uid查询当前用户拥有的角色名字
+     *
+     * @return
+     */
+    List<String> selectRoleNamesByUid(@Param("uid") Integer uid);
 }

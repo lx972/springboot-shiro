@@ -98,7 +98,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         //删除角色拥有的菜单
         adminRoleMenuMapper.deleteByRid(role.getId());
         //加入新菜单
-        AdminRoleMenu adminRoleMenu=new AdminRoleMenu();
+        AdminRoleMenu adminRoleMenu = new AdminRoleMenu();
         adminRoleMenu.setRid(role.getId());
         for (Integer mid : role.getMids()) {
             adminRoleMenu.setMid(mid);
@@ -108,7 +108,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         //删除角色拥有的功能
         adminRolePermissionMapper.deleteByRid(role.getId());
         //加入新功能
-        AdminRolePermission adminRolePermission=new AdminRolePermission();
+        AdminRolePermission adminRolePermission = new AdminRolePermission();
         adminRolePermission.setRid(role.getId());
         for (Integer pid : role.getPids()) {
             adminRolePermission.setPid(pid);
@@ -116,5 +116,53 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             adminRolePermission.setId(null);
         }
         return new ResultAPI(200, "更新角色信息及其菜单和功能成功");
+    }
+
+    /**
+     * 添加角色
+     *
+     * @param role
+     * @return
+     */
+    @Override
+    public ResultAPI addRole(AdminRole role) {
+        role.setEnabled(true);
+        adminRoleMapper.insert(role);
+        return new ResultAPI(200, "添加角色成功");
+    }
+
+    /**
+     * 删除角色
+     *
+     * @param rid
+     * @return
+     */
+    @Override
+    public ResultAPI deleteRoleByRid(Integer rid) {
+        adminRoleMapper.deleteByPrimaryKey(rid);
+        //删除角色拥有的菜单
+        adminRoleMenuMapper.deleteByRid(rid);
+        //删除角色拥有的功能
+        adminRolePermissionMapper.deleteByRid(rid);
+        return new ResultAPI(200, "删除角色成功");
+    }
+
+
+    /**
+     * 批量删除角色
+     *
+     * @param rids
+     * @return
+     */
+    @Override
+    public ResultAPI deleteBatchRoleByRid(List<Integer> rids) {
+        adminRoleMapper.deleteBatch(rids);
+        for (Integer rid : rids) {
+            //删除角色拥有的菜单
+            adminRoleMenuMapper.deleteByRid(rid);
+            //删除角色拥有的功能
+            adminRolePermissionMapper.deleteByRid(rid);
+        }
+        return new ResultAPI(200, "批量删除角色成功");
     }
 }

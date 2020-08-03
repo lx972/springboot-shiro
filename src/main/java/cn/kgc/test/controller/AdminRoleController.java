@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * cn.kgc.test.controller
  *
@@ -96,6 +98,58 @@ public class AdminRoleController {
         logger.info(role.toString());
         try {
             ResultAPI result = adminRoleService.updateRoleMenuAndPermission(role);
+            return result;
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+
+    /**
+     * 添加角色
+     *
+     * @return
+     */
+    @RequestMapping(path = "/roles", method = RequestMethod.POST)
+    public ResultAPI addRole(@RequestBody AdminRole role) {
+        logger.info("添加角色");
+        logger.info(role.toString());
+        try {
+            ResultAPI result = adminRoleService.addRole(role);
+            return result;
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+    /**
+     * 删除角色
+     *
+     * @return
+     */
+    @RequestMapping(path = "/roles/{rid}", method = RequestMethod.DELETE)
+    public ResultAPI deleteRole(@PathVariable("rid") Integer rid) {
+        logger.info("删除角色");
+        logger.info(rid.toString());
+        try {
+            ResultAPI result = adminRoleService.deleteRoleByRid(rid);
+            return result;
+        } catch (Exception e) {
+            return new ResultAPI(500, "服务器异常");
+        }
+    }
+
+    /**
+     * 批量删除角色
+     *
+     * @return
+     */
+    @RequestMapping(path = "/roles/batch/{rids}", method = RequestMethod.DELETE)
+    public ResultAPI deleteBatchRole(@PathVariable("rids") List<Integer> rids) {
+        logger.info("批量删除角色");
+        logger.info(rids.toString());
+        try {
+            ResultAPI result = adminRoleService.deleteBatchRoleByRid(rids);
             return result;
         } catch (Exception e) {
             return new ResultAPI(500, "服务器异常");

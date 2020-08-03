@@ -25,4 +25,12 @@ public interface AdminPermissionMapper {
      * @return
      */
     List<Integer> selectPidsByRid(@Param("rid") Integer rid);
+
+    /**
+     * 根据用户id查询出该用户拥有的功能
+     *
+     * @param uid
+     * @return
+     */
+    List<String> selectPermNameByUid(@Param("uid") Integer uid);
 }

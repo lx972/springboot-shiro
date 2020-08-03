@@ -56,4 +56,19 @@
         SELECT id, `name`, name_zh, enabled
         FROM admin_role WHERE enabled=1
     </select>
+    <!--批量删除角色-->
+    <delete id="deleteBatch" parameterType="java.lang.Integer">
+        delete from admin_role
+        where id in
+        <foreach collection="rids" item="rid" index="i" open="(" separator="," close=")">
+            #{rid}
+        </foreach>
+    </delete>
+    <!--根据uid查询当前用户拥有的角色名字-->
+    <select id="selectRoleNamesByUid" resultType="java.lang.String">
+        SELECT  `name`
+        FROM admin_role WHERE enabled=1 and id in (
+        select rid from admin_user_role where uid=#{uid}
+        )
+    </select>
 </mapper>

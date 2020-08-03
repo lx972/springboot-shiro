@@ -14,6 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("cn.kgc.test.mapper")
 public class TestStart {
     public static void main(String[] args) {
-        SpringApplication.run(TestStart.class,args);
+        SpringApplication.run(TestStart.class, args);
     }
 }

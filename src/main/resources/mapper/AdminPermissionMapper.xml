@@ -38,4 +38,13 @@
     select pid
     from admin_role_permission where rid=#{rid}
   </select>
+    <!--根据用户id查询出该用户拥有的功能-->
+    <select id="selectPermNameByUid" resultType="java.lang.String">
+    select url
+    from admin_permission where id in(
+    select pid from admin_role_permission where rid in(
+    select rid from admin_user_role where  uid=#{uid}
+    )
+    )
+  </select>
 </mapper>

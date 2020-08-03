@@ -1,5 +1,7 @@
 package cn.kgc.test.realm;
 
+import cn.kgc.test.mapper.AdminPermissionMapper;
+import cn.kgc.test.mapper.AdminRoleMapper;
 import cn.kgc.test.mapper.UserMapper;
 import cn.kgc.test.model.User;
 import org.apache.shiro.authc.AuthenticationException;
@@ -7,10 +9,13 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * cn.kgc.test.realm
@@ -23,6 +28,12 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
+
+    @Autowired
+    private AdminPermissionMapper adminPermissionMapper;
+
     /**
      * 授权
      *
@@ -31,7 +42,19 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        String username = (String) principalCollection.getPrimaryPrincipal();
+        //去数据库查询当前用户信息
+        User user = new User();
+        user.setUsername(username);
+        User loginUser = userMapper.selectOneByUser(user);
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        //查询当前用户拥有的角色
+        List<String> roleNames = adminRoleMapper.selectRoleNamesByUid(loginUser.getId());
+        simpleAuthorizationInfo.addRoles(roleNames);
+        //查询当前用户拥有的权限
+        List<String> permNames=adminPermissionMapper.selectPermNameByUid(loginUser.getId());
+        simpleAuthorizationInfo.addStringPermissions(permNames);
+        return simpleAuthorizationInfo;
     }
 
     /**
