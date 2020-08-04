@@ -46,4 +46,28 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
         List<Integer> pids = adminPermissionMapper.selectPidsByRid(rid);
         return new ResultAPI(200, "根据角色id查询出该角色拥有的功能id成功", pids);
     }
+
+    /**
+     * 加载该角色功能表格
+     *
+     * @param rid
+     * @return
+     */
+    @Override
+    public ResultAPI findTableByRid(Integer rid) {
+        List<AdminPermission> adminPermissions = adminPermissionMapper.selectAll();
+        List<Integer> pids = adminPermissionMapper.selectPidsByRid(rid);
+
+        for (int i = 0; i < adminPermissions.size(); i++) {
+            adminPermissions.get(i).setStatus(false);
+            for (Integer pid : pids) {
+                if (adminPermissions.get(i).getId().equals(pid)) {
+                    adminPermissions.get(i).setStatus(true);
+                }
+            }
+        }
+        return new ResultAPI(200, "根据角色id查询出该角色功能列表成功", adminPermissions);
+    }
+
+
 }

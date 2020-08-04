@@ -24,4 +24,12 @@ public interface AdminRolePermissionMapper {
      * @return
      */
     int deleteByRid(@Param("rid") Integer rid);
+
+    /**
+     * 根据角色id和权限id删除对应功能
+     *
+     * @param rid
+     * @return
+     */
+    int deleteByRidAndPid(@Param("rid") Integer rid,@Param("pid") Integer pid);
 }

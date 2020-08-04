@@ -4,6 +4,7 @@ import cn.kgc.test.mapper.AdminRoleMapper;
 import cn.kgc.test.mapper.AdminRoleMenuMapper;
 import cn.kgc.test.mapper.AdminRolePermissionMapper;
 import cn.kgc.test.mapper.AdminUserRoleMapper;
+import cn.kgc.test.model.AdminPermission;
 import cn.kgc.test.model.AdminRole;
 import cn.kgc.test.model.AdminRoleMenu;
 import cn.kgc.test.model.AdminRolePermission;
@@ -105,7 +106,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             adminRoleMenuMapper.insert(adminRoleMenu);
             adminRoleMenu.setId(null);
         }
-        //删除角色拥有的功能
+        /*//删除角色拥有的功能
         adminRolePermissionMapper.deleteByRid(role.getId());
         //加入新功能
         AdminRolePermission adminRolePermission = new AdminRolePermission();
@@ -114,7 +115,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             adminRolePermission.setPid(pid);
             adminRolePermissionMapper.insert(adminRolePermission);
             adminRolePermission.setId(null);
-        }
+        }*/
         return new ResultAPI(200, "更新角色信息及其菜单和功能成功");
     }
 
@@ -164,5 +165,26 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             adminRolePermissionMapper.deleteByRid(rid);
         }
         return new ResultAPI(200, "批量删除角色成功");
+    }
+
+    /**
+     * 更改功能状态
+     *
+     * @param rid
+     * @return
+     */
+    @Override
+    public ResultAPI updateTableByRid(Integer rid, AdminPermission adminPermission) {
+        if (adminPermission.getStatus()){
+            //加入功能
+            AdminRolePermission adminRolePermission=new AdminRolePermission();
+            adminRolePermission.setPid(adminPermission.getId());
+            adminRolePermission.setRid(rid);
+            adminRolePermissionMapper.insert(adminRolePermission);
+        }else {
+            //删除功能
+            adminRolePermissionMapper.deleteByRidAndPid(rid, adminPermission.getId());
+        }
+        return new ResultAPI(200, "修改功能状态成功");
     }
 }

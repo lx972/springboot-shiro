@@ -11,6 +11,8 @@ public class AdminPermission implements Serializable {
 
     private String url;
 
+    private Boolean status;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -45,6 +47,14 @@ public class AdminPermission implements Serializable {
         this.url = url == null ? null : url.trim();
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -55,6 +65,7 @@ public class AdminPermission implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", desc_=").append(desc_);
         sb.append(", url=").append(url);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

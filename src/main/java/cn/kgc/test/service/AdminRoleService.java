@@ -1,5 +1,6 @@
 package cn.kgc.test.service;
 
+import cn.kgc.test.model.AdminPermission;
 import cn.kgc.test.model.AdminRole;
 import cn.kgc.test.utils.ResultAPI;
 
@@ -78,4 +79,11 @@ public interface AdminRoleService {
      * @return
      */
     ResultAPI deleteBatchRoleByRid(List<Integer> rids);
+
+    /**
+     * 更改功能状态
+     *
+     * @return
+     */
+    ResultAPI updateTableByRid(Integer rid, AdminPermission adminPermission);
 }

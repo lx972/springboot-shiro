@@ -24,4 +24,14 @@ public interface AdminPermissionService {
      * @return
      */
     ResultAPI findPidsByRid(Integer rid);
+
+    /**
+     * 加载该角色功能表格
+     *
+     * @return
+     */
+    ResultAPI findTableByRid(Integer rid);
+
+
+
 }

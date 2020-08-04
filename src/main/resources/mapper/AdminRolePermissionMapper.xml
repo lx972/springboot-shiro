@@ -34,4 +34,9 @@
     delete from admin_role_permission
     where rid = #{rid,jdbcType=INTEGER}
   </delete>
+  <!--根据角色id和权限id删除对应功能-->
+  <delete id="deleteByRidAndPid" parameterType="java.lang.Integer" >
+    delete from admin_role_permission
+    where rid = #{rid,jdbcType=INTEGER} and pid=#{pid}
+  </delete>
 </mapper>
