@@ -1,5 +1,7 @@
 package cn.kgc.test.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ public class Book implements Serializable {
 
     private String author;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
 
     private String press;
